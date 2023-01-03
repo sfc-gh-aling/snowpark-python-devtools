@@ -22,10 +22,6 @@ def _process_response_recording(response):
     return response
 
 
-def _no_op_decoration(func):
-    return func
-
-
 @pytest.fixture(autouse=True)
 def _vcr_marker(request):
     snowpark_record_mode = request.config.getoption('--snowpark-record-mode')
@@ -53,7 +49,7 @@ def vcr_cassette_name(request):
 
 
 def pytest_addoption(parser):
-    group = parser.getgroup('snowpark-devtools')
+    group = parser.getgroup('snowpark-python-devtools')
     group.addoption(
         '--snowpark-vcr-mode',
         action='store',
@@ -66,8 +62,10 @@ def pytest_addoption(parser):
         '--snowpark-record-mode',
         action='store',
         dest='snowpark_record_mode',
-        default='disable',
-        choices=['annotated', 'disable', 'all']
+        default=SnowparkRecordMode.ANNOTATED,
+        choices=[e.value for e in SnowparkRecordMode],
+        help='Specify the tests to be recorded. `annotated` to record and replay annotated tests,'
+             ' `disable` to disable record and play, `all` to record and replay all the tests'
     )
 
 
