@@ -1,8 +1,17 @@
 # snowpark-python-devtools
 
+# Installation
+
+```bash
+$git clone git@github.com:sfc-gh-aling/snowpark-python-devtools.git
+$cd snowpark-python-devtools
+$git checkout -b dev origin/dev
+$pip install .
+```
+
 # Example
 
-## Annotate a test
+## Annotate a test to run with record and replay
 
 ```python
 
