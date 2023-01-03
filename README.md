@@ -1,6 +1,6 @@
 # snowpark-python-devtools
 
-# Installation
+# Installation from source code
 
 ```bash
 $git clone git@github.com:sfc-gh-aling/snowpark-python-devtools.git
@@ -25,8 +25,8 @@ def test_method():
 ### Specifying tests
 
 ```bash
-# run tests which are annotated with `@pytest.mark.snowpark_vcr` in record and replay
-$pytest <tests> --snowpark-record-mode annotated,  this is the default mode
+# run tests which are annotated with `@pytest.mark.snowpark_vcr` in record and replay, this is the default mode
+$pytest <tests> --snowpark-record-mode annotated
 # disable running record and replay mode for all the tests
 $pytest <tests> --snowpark-record-mode disable
 # run all the tests in record and replay regardless of whether the tests are being annotated with `@pytest.mark.snowpark_vcr`
