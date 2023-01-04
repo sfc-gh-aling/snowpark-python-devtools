@@ -63,9 +63,9 @@ def snowpark_vcr_config():
 
 ```bash
 # run tests which are annotated with `@pytest.mark.snowpark_vcr` in record and replay, this is the default mode
-$pytest <tests> --snowpark-record-mode annotated
+$pytest <tests> --snowpark-record-tests-selection annotated
 # disable running record and replay mode for all the tests
-$pytest <tests> --snowpark-record-mode disable
+$pytest <tests> --snowpark-record-tests-selection disable
 # run all the tests in record and replay regardless of whether the tests are being annotated with `@pytest.mark.snowpark_vcr`
-$pytest <tests> --snowpark-record-mode all
+$pytest <tests> --snowpark-record-tests-selection all
 ```
