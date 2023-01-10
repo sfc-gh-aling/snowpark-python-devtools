@@ -18,7 +18,7 @@ $git checkout -b dev origin/dev
 $pip install .
 ```
 
-# Examples fore record and replay
+# Quick Start
 
 ## Annotate a test to run with record and replay
 
@@ -29,7 +29,41 @@ def test_method():
     pass
 ```
 
-## vcrpy configuration
+
+## Run with pytest
+
+snowpark-python-devtools is a pytest plugin and by default it will identify tests annotated with `@pytest.mark.snowpark_vcr`
+and run those tests in record and replay mode.
+
+```bash
+$pytest test_method
+```
+
+
+# pytest options to run tests in record and replay
+
+
+### Specifying tests
+
+A pytest option is provided to select the tests run in record and replay mode: `--snowpark-record-tests-selectio` and there are three modes `annotated`, `disable`, `all`:
+
+- `annotated`: This is the default mode, pytest will only run the tests annotated with `@pytest.mark.snowpark_vcr` in record and replay mode.
+- `disable`: This will disable record and replay for all tests.
+- `all` This will all tests in record and replay regardless of whether the test is annotated with `@pytest.mark.snowpark_vcr`.
+
+```bash
+# run tests which are annotated with `@pytest.mark.snowpark_vcr` in record and replay, this is the default mode
+$pytest <tests>
+# run tests which are annotated with `@pytest.mark.snowpark_vcr` in record and replay, with explicitly setting the default mode
+$pytest <tests> --snowpark-record-tests-selection annotated
+# disable running record and replay mode for all the tests
+$pytest <tests> --snowpark-record-tests-selection disable
+# run all the tests in record and replay regardless of whether the tests are being annotated with `@pytest.mark.snowpark_vcr`
+$pytest <tests> --snowpark-record-tests-selection all
+```
+
+
+## Optional vcrpy configuration
 
 ### Customized vcrpy config per test case
 
@@ -55,17 +89,4 @@ def snowpark_vcr_config():
     return {
         # your vcr config dict
     }
-```
-
-## pytest options to run tests in record and replay
-
-### Specifying tests
-
-```bash
-# run tests which are annotated with `@pytest.mark.snowpark_vcr` in record and replay, this is the default mode
-$pytest <tests> --snowpark-record-tests-selection annotated
-# disable running record and replay mode for all the tests
-$pytest <tests> --snowpark-record-tests-selection disable
-# run all the tests in record and replay regardless of whether the tests are being annotated with `@pytest.mark.snowpark_vcr`
-$pytest <tests> --snowpark-record-tests-selection all
 ```
