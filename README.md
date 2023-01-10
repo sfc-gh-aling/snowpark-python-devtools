@@ -39,6 +39,15 @@ and run those tests in record and replay mode.
 $pytest test_method
 ```
 
+With the first time running the test, a recording file containing http request/response with
+the name being `<test_class_name>,<test_method_name>.yaml` will be
+generated under the directory `<your_test_folder>/cassettes`.
+
+Once the recording is generated, the following running of the test will run against the local recordings.
+
+If any change is made upon the test itself on purpose which changes the body of the request/response, you could delete
+the specific recording file under `<your_test_folder>/cassettes` so that the next running will regenerate the recording.
+
 
 # pytest options to run tests in record and replay
 
