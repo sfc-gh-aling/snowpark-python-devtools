@@ -1,16 +1,26 @@
 from enum import Enum
+import uuid
 
 
-_SNOWFLAKE_CREDENTIAL_HEADER_FIELDS = [
+SNOWFLAKE_CREDENTIAL_HEADER_FIELDS = [
     "Authorization",
 ]
 
 
-_SNOWFLAKE_REQUEST_ID_STRINGS = [
+SNOWFLAKE_REQUEST_ID_STRINGS = [
     "request_guid",
     "request_id",
     "requestId",
 ]
+
+SNOWFLAKE_DB_RELATED_FIELDS_IN_QUERY = [
+    "databaseName",
+    "roleName",
+    "schemaName",
+    "warehouse",
+]
+
+VOID_STRING = str(uuid.UUID(int=0))
 
 
 class SnowparkRecordMode(str, Enum):

@@ -1,4 +1,3 @@
-import uuid
 import pytest
 import os
 
@@ -6,9 +5,15 @@ from ._vendored.vcrpy import VCR
 from ._constant import (
     SnowparkRecordMode,
     VcrpyRecordMode,
-    _SNOWFLAKE_REQUEST_ID_STRINGS,
-    _SNOWFLAKE_CREDENTIAL_HEADER_FIELDS,
+    SNOWFLAKE_REQUEST_ID_STRINGS,
+    SNOWFLAKE_DB_RELATED_FIELDS_IN_QUERY,
+    SNOWFLAKE_CREDENTIAL_HEADER_FIELDS,
+    VOID_STRING,
 )
+
+
+# Internal switch controlling _process_request_recording to scrub information or not
+_SCRUB_SNOWFLAKE_INFO = True
 
 
 def _process_request_recording(request):
@@ -17,14 +22,18 @@ def _process_request_recording(request):
     Filter and scrub Snowflake credentials.
     """
     # filter request id
-    for key, value in request.query:
-        if key in _SNOWFLAKE_REQUEST_ID_STRINGS:
-            request.uri = request.uri.replace(value, str(uuid.UUID(int=0)))
+    if _SCRUB_SNOWFLAKE_INFO:
+        for key, value in request.query:
+            if (
+                key in SNOWFLAKE_REQUEST_ID_STRINGS
+                or key in SNOWFLAKE_DB_RELATED_FIELDS_IN_QUERY
+            ):
+                request.uri = request.uri.replace(value, VOID_STRING)
 
-    # scrub account information
-    if request.host.endswith(".snowflakecomputing.com"):
-        account = request.host.split(".snowflakecomputing.com")[0]
-        request.uri = request.uri.replace(account, "scrubbed_account")
+        # scrub snowflake account information
+        if request.host.endswith(".snowflakecomputing.com"):
+            account = request.host.split(".snowflakecomputing.com")[0]
+            request.uri = request.uri.replace(account, VOID_STRING)
 
     # The following line is to note how to decompress body in request
     # dict_body = json.loads(gzip.decompress(request.body).decode('UTF-8'))
@@ -109,7 +118,9 @@ def snowpark_vcr(request, snowpark_vcr_cassette_dir, snowpark_vcr_config):
         path_transformer=VCR.ensure_suffix(".yaml"),
         before_record_request=_process_request_recording,
         before_record_response=_process_response_recording,
-        filter_headers=_SNOWFLAKE_CREDENTIAL_HEADER_FIELDS,
+        filter_headers=SNOWFLAKE_CREDENTIAL_HEADER_FIELDS
+        if _SCRUB_SNOWFLAKE_INFO
+        else [],
         **(snowpark_vcr_config or {})
     )
     _update_kwargs(request, kwargs)
