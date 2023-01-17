@@ -22,14 +22,10 @@ def _process_request_recording(request):
             request.uri = request.uri.replace(value, str(uuid.UUID(int=0)))
 
     # scrub account information
-    # TODO: P0 fact check if there's other domains
     if request.host.endswith(".snowflakecomputing.com"):
         account = request.host.split(".snowflakecomputing.com")[0]
-        # TODO: P2 allow customization on how to scrub fields,
-        #  e.g., allow specifying the replaced value
         request.uri = request.uri.replace(account, "scrubbed_account")
 
-    # TODO: P0 fact check that body does not contain Snowflake credentials
     # The following line is to note how to decompress body in request
     # dict_body = json.loads(gzip.decompress(request.body).decode('UTF-8'))
 
@@ -131,6 +127,6 @@ def snowpark_vcr_cassette_dir(request):
 def snowpark_vcr_config():
     """
     This is the default empty config.
-    Users' definition of vcrpy_config fixture will override the empty config.
+    Users' definition of snowpark_vcr_config fixture will override the empty config.
     """
     return {}

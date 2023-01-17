@@ -1,16 +1,12 @@
 from setuptools import find_packages, setup
 
 
-# TODO: P1 namespace package unsettled
-#  do we want to share the same namespace package snowflake.snowpark,
-#  e.g., snowflake.snowpark.devtools
-#  or make it a top level package, e.g., currently being snowflake.devtools
 def get_devtools_packages():
     return [f"snowflake.{pkg}" for pkg in find_packages(where="src/snowflake")]
 
 
 setup(
-    name="snowpark-python-devtools",  # TODO: P1 package name unsettled
+    name="snowpark-python-devtools",
     version="0.1.0",
     license="Apache License, Version 2.0",
     description="Snowflake Snowpark Python DevTools",
@@ -26,8 +22,11 @@ setup(
         "yarl",
         "pytest",
     ],
+    extras_require={
+        "development": ["snowflake-connector-python[pandas]"],
+    },
     classifiers=[
-        "Development Status :: 1 - Planning",
+        "Development Status :: 3 - Alpha",
         "Framework :: Pytest",
         "Intended Audience :: Developers",
         "Topic :: Software Development :: Testing",
@@ -45,7 +44,6 @@ setup(
     ],
     entry_points={
         "pytest11": [
-            # TODO: P1 package name unsettled
             "snowpark-python-devtools = snowflake.devtools.snowpark_pytest_plugin",
         ],
     },
