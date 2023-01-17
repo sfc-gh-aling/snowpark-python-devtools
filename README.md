@@ -14,7 +14,6 @@ snowpark-python-devtools provides the following features:
 ```bash
 $git clone git@github.com:sfc-gh-aling/snowpark-python-devtools.git
 $cd snowpark-python-devtools
-$git checkout -b dev origin/dev
 $pip install .
 ```
 
