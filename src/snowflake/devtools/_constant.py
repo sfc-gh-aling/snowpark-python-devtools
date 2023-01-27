@@ -1,6 +1,8 @@
 from enum import Enum
 import uuid
 
+# comment
+
 
 SNOWFLAKE_CREDENTIAL_HEADER_FIELDS = [
     "Authorization",
